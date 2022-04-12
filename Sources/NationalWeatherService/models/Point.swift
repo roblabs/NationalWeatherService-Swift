@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GEOSwift
 
 public struct Point: Decodable {
     public enum CodingKeys: String, CodingKey {
@@ -18,7 +19,7 @@ public struct Point: Decodable {
     public let forecast: URL
     public let forecastHourly: URL
 
-//    public let relativeLocation: MKGeoJSONFeature
+    public let relativeLocation: Feature
     
     public let timeZone: String
     public let radarStation: String
@@ -32,6 +33,8 @@ public struct Point: Decodable {
 
         self.forecast = try container.decode(URL.self, forKey: .forecast)
         self.forecastHourly = try container.decode(URL.self, forKey: .forecastHourly)
+        
+        self.relativeLocation = try container.decode(Feature.self, forKey: .relativeLocation)
 
 //        let timeZoneName = try container.decode(String.self, forKey: .timeZone)
 //        guard let timeZone = TimeZone(identifier: timeZoneName) else {
