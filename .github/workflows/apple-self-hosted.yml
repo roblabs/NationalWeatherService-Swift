@@ -1,0 +1,54 @@
+# file:  .github/workflows/apple-self-hosted.yml
+name: Apple on Self Hosted
+env:
+    NWS_AGENT_CONTACT: 'NWS_AGENT_CONTACT: GitHub actions runner for iOS & macOS'
+on:
+  push:
+    branches:
+      - master
+      - actions/runner
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  macos:
+    runs-on: self-hosted
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1.6.0
+      with:
+        xcode-version: '16.0.0-beta'
+    - uses: actions/checkout@v4.1.7
+    - uses: actions/cache@v4.0.2
+      with:
+        path: .build
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-
+    - name: Build
+      run: swift build -v
+    - name: Run tests
+      run: swift test -v
+
+  ios:
+    runs-on: macos-latest
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1.6.0
+      with:
+        xcode-version: '16.0.0-beta'
+    - uses: actions/checkout@v4.1.7
+    - uses: actions/cache@v4.0.2
+      with:
+        path: .build
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-
+    - name: Build
+      run: xcodebuild clean build-for-testing
+        -scheme 'NationalWeatherService'
+        -destination 'name=iPhone 15 Pro'
+        -quiet
+    - name: Unit Test
+      run: xcodebuild test-without-building
+        -scheme 'NationalWeatherService'
+        -destination 'name=iPhone 15 Pro'
+        -quiet
