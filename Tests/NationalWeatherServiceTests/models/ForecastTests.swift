@@ -36,7 +36,7 @@ final class ForecastTests: XCTestCase {
         let forecast = try decoder.decode(Forecast.self, from: forecastData)
 
         XCTAssertEqual(forecast.generatedAt, iso8601.date(from: "2020-04-03T03:43:53+00:00")!)
-        XCTAssertEqual(forecast.updated, iso8601.date(from: "2020-04-02T23:05:37+00:00")!)
+        XCTAssertEqual(forecast.updateTime, iso8601.date(from: "2020-04-02T23:05:37+00:00")!)
 
         XCTAssertEqual(forecast.validTimes, DateInterval(start: iso8601.date(from: "2020-04-02T17:00:00+00:00")!,
                                                          end: iso8601.date(from: "2020-04-10T13:00:00+00:00")!))

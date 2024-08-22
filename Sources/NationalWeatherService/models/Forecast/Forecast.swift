@@ -9,10 +9,10 @@ import Foundation
 
 public struct Forecast: Decodable {
     public enum CodingKeys: String, CodingKey {
-        case updated, generatedAt, validTimes, elevation, periods
+        case updateTime, generatedAt, validTimes, elevation, periods
     }
 
-    public let updated: Date
+    public let updateTime: Date
     public let generatedAt: Date
 
     // TODO: Handle valid times interval
@@ -23,7 +23,7 @@ public struct Forecast: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.updated = try container.decode(Date.self, forKey: .updated)
+        self.updateTime = try container.decode(Date.self, forKey: .updateTime)
         self.generatedAt = try container.decode(Date.self, forKey: .generatedAt)
 
         let validTimesValue = try container.decode(String.self, forKey: .validTimes)
