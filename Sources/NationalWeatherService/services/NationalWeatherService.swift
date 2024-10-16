@@ -9,11 +9,11 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
-import GEOSwift
+import Turf
 
 public class NationalWeatherService {
     // Definitions
-    public typealias GeoJSONHandler = (Result<GeoJSON, Error>) -> Void
+    public typealias GeoJSONHandler = (Result<GeoJSONObject, Error>) -> Void
 
     private let decoder: JSONDecoder = {
         let _decoder = JSONDecoder()
@@ -43,7 +43,7 @@ public class NationalWeatherService {
         let task = session.dataTask(with: request) { result in
             switch result {
             case .success(let data):
-                if let geoJSON = try? self.decoder.decode(GeoJSON.self, from: data) {
+                if let geoJSON = try? self.decoder.decode(GeoJSONObject.self, from: data) {
                     handler(.success(geoJSON))
                 } else if let errorDetails = try? self.decoder.decode(APIErrorDetails.self, from: data) {
                     if errorDetails.isInvalidPoint {
@@ -69,9 +69,9 @@ public class NationalWeatherService {
             switch result {
             case .success(let object):
                 if case let .feature(feature) = object,
-                   let featureProperties = feature.untypedProperties {
+                   let featureProperties = feature.properties {
                     do {
-                        let data = try JSONSerialization.data(withJSONObject: featureProperties, options: [])
+                        let data = try JSONEncoder().encode(featureProperties)
                         handler(.success(try self.decoder.decode(type, from: data)))
                     } catch {
                         handler(.failure(error))

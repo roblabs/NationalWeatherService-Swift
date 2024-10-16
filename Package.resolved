@@ -2,21 +2,12 @@
   "object": {
     "pins": [
       {
-        "package": "geos",
-        "repositoryURL": "https://github.com/GEOSwift/geos.git",
+        "package": "Turf",
+        "repositoryURL": "https://github.com/mapbox/turf-swift.git",
         "state": {
           "branch": null,
-          "revision": "f510e634c822116fca615064d889300dba40d761",
-          "version": "8.1.0"
-        }
-      },
-      {
-        "package": "GEOSwift",
-        "repositoryURL": "https://github.com/GEOSwift/GEOSwift.git",
-        "state": {
-          "branch": null,
-          "revision": "1fee0146ee06ca2d1e83070320b95526f3690f9d",
-          "version": "10.2.0"
+          "revision": "1997fb3c3dc0d8181690a1ec192ed907bcead9e8",
+          "version": "3.0.0"
         }
       }
     ]
